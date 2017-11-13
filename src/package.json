@@ -1,0 +1,9 @@
+{
+    "name": "chainium-smart-contracts",
+    "version": "1.0.0",
+    "description": "Chainium Smart Contracts",
+    "private": true,
+    "devDependencies": {
+        "zeppelin-solidity": "^1.3.0"
+    }
+}
