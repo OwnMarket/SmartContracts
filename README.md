@@ -1,5 +1,7 @@
 # Chainium Smart Contracts
 
+This repository contains smart contract code for Chainium Token (CHX) and corresponding token sale.
+
 ![Smart Contract Hierarchy](docs/SmartContractHierarchy.png)
 
 ## Setup
