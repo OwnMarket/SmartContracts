@@ -1,5 +1,7 @@
 # Chainium Smart Contracts
 
+![Smart Contract Hierarchy](docs/SmartContractHierarchy.png)
+
 ## Setup
 
 Global prerequisites:
