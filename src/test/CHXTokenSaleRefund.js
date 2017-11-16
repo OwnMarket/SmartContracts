@@ -66,6 +66,32 @@ contract('CHXTokenSale', accounts => {
 
         // ACT
         await chxTokenSale.claimRefund({from: investor1})
+
+        // ASSERT
+        assert(web3.eth.getBalance(raisedEtherWallet).equals(0), 'raisedEtherWallet balance mismatch')
+        assert(web3.eth.getBalance(chxTokenSale.address).equals(web3.toWei(2, 'ether')), 'Token sale contract ether balance mismatch')
+        assert((await chxTokenSale.etherRaised()).equals(web3.toWei(3, 'ether')), 'etherRaised mismatch')
+
+        assert((await chxToken.balanceOf(tokenRefundWallet)).equals(e18(1000)), 'tokenRefundWallet balance mismatch')
+        assert((await chxToken.balanceOf(investor1)).equals(e18(0)), 'Investor 1 balance mismatch')
+        assert((await chxToken.balanceOf(investor2)).equals(e18(2000)), 'Investor 2 balance mismatch')
+    })
+
+    it('rejects refunds if not enabled', async () => {
+        // ARRANGE
+        await chxTokenSale.disableRefunds()
+        assert.isFalse(await chxTokenSale.refundsEnabled.call(), 'Refunds should not be enabled')
+
+        // ACT
+        await helpers.shouldFail(chxTokenSale.claimRefund({from: investor2}))
+    })
+
+    it('accepts refunds if re-enabled', async () => {
+        // ARRANGE
+        await chxTokenSale.enableRefunds()
+        assert.isTrue(await chxTokenSale.refundsEnabled.call(), 'Refunds should be enabled')
+
+        // ACT
         await chxTokenSale.claimRefund({from: investor2})
 
         // ASSERT
@@ -76,14 +102,5 @@ contract('CHXTokenSale', accounts => {
         assert((await chxToken.balanceOf(tokenRefundWallet)).equals(e18(3000)), 'tokenRefundWallet balance mismatch')
         assert((await chxToken.balanceOf(investor1)).equals(e18(0)), 'Investor 1 balance mismatch')
         assert((await chxToken.balanceOf(investor2)).equals(e18(0)), 'Investor 2 balance mismatch')
-    })
-
-    it('rejects refunds if not enabled', async () => {
-        // ARRANGE
-        await chxTokenSale.disableRefunds()
-        assert.isFalse(await chxTokenSale.refundsEnabled.call(), 'Refunds should not be enabled')
-
-        // ACT
-        await helpers.shouldFail(chxTokenSale.claimRefund({from: investor3}))
     })
 })
