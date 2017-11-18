@@ -191,7 +191,6 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
     function drainStrayEther(uint _amount)
         public
         onlyOwner
-        onlyAfterTokenSale
         returns (bool)
     {
         owner.transfer(_amount);
@@ -202,7 +201,6 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
     function drainStrayTokens(ERC20Basic _token, uint _amount)
         public
         onlyOwner
-        onlyAfterTokenSale
         returns (bool)
     {
         return _token.transfer(owner, _amount);
