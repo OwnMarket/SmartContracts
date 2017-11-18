@@ -103,7 +103,7 @@ Functionality related to *offline* sale is available without time restrictions, 
 
 During public sale, Ether is sent to token sale contract's address, which will invoke *fallback function* (`function() {...}`). Fallback function invokes `buyTokens` function which handles the purchase by doing following:
 
-- Ensure minimum and KYC thresholds.
+- Enforce minimum investment and KYC whitelist thresholds.
 - Ensure sale cap is not exceeded.
 - Transfer tokens to investors address.
 
