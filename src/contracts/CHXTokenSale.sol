@@ -58,6 +58,11 @@ contract CHXTokenSale is Whitelistable {
         require(token.transfer(ICO_COSTS_WALLET, ICO_COSTS_TOKENS));
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Sale
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
     function() public payable {
         buyTokens();
     }
@@ -81,19 +86,19 @@ contract CHXTokenSale is Whitelistable {
         TokenPurchasedOnline(investor, contribution, tokens);
     }
 
+    function processTokenPurchase(address _investor, uint _tokens) private {
+        require(tokensSoldOnline.add(tokensSoldOffline) <= SALE_CAP);
+        tokenPurchases[_investor] = tokenPurchases[_investor].add(_tokens);
+
+        require(token.transfer(_investor, _tokens));
+    }
+
     function processOfflinePurchase(address _investor, uint _tokens) public onlyOwner {
         require(tokensSoldOffline.add(_tokens) <= offlineSaleCap);
         tokensSoldOffline = tokensSoldOffline.add(_tokens);
 
         processTokenPurchase(_investor, _tokens);
         TokenPurchasedOffline(_investor, _tokens);
-    }
-
-    function processTokenPurchase(address _investor, uint _tokens) private {
-        require(tokensSoldOnline.add(tokensSoldOffline) <= SALE_CAP);
-        tokenPurchases[_investor] = tokenPurchases[_investor].add(_tokens);
-
-        require(token.transfer(_investor, _tokens));
     }
 
     function calculateTokens(uint _contribution) public view returns (uint) {
@@ -104,21 +109,6 @@ contract CHXTokenSale is Whitelistable {
         require(_newOfflineSaleCap >= tokensSoldOffline);
         require(_newOfflineSaleCap <= SALE_CAP.sub(tokensSoldOnline));
         offlineSaleCap = _newOfflineSaleCap;
-    }
-
-    function closeTokenSale() public onlyOwner onlyAfterSaleEnd {
-        disableRefunds();
-
-        uint unsoldTokens = token.balanceOf(this);
-        if (unsoldTokens > 0) {
-            require(token.transfer(RESERVE_FUND_WALLET, unsoldTokens));
-        }
-
-        if (this.balance > 0) {
-            RAISED_ETHER_WALLET.transfer(this.balance);
-        }
-
-        require(token.closeTokenSale()); // Lift transfer restrictions
     }
 
     modifier onlyDuringSale() {
@@ -161,5 +151,25 @@ contract CHXTokenSale is Whitelistable {
 
         msg.sender.transfer(contribution);
         EtherRefunded(msg.sender, contribution);
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Closing
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function closeTokenSale() public onlyOwner onlyAfterSaleEnd {
+        disableRefunds();
+
+        uint unsoldTokens = token.balanceOf(this);
+        if (unsoldTokens > 0) {
+            require(token.transfer(RESERVE_FUND_WALLET, unsoldTokens));
+        }
+
+        if (this.balance > 0) {
+            RAISED_ETHER_WALLET.transfer(this.balance);
+        }
+
+        require(token.closeTokenSale()); // Lift transfer restrictions
     }
 }
