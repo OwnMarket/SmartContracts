@@ -3,26 +3,26 @@ Functional Specification of CHX Contracts
 
 There are two contracts taking part in CHX token distribution and usage:
 
-- `CHXToken`
-- `CHXTokenSale`
+- CHXToken
+- CHXTokenSale
 
 
 ## CHXToken Contract
 
 ![CHX Token Contract Hierarchy](CHXTokenContractHierarchy.png)
 
-CHXToken is an [ERC20](https://theethereum.wiki/w/index.php/ERC20_Token_Standard) token contract, which keeps the records of CHX token holders' balances, and enables transfers of tokens.
+`CHXToken` is an [ERC20](https://theethereum.wiki/w/index.php/ERC20_Token_Standard) token contract, with the main purpose of keeping the records of CHX token holders' balances, and enabling transfers of tokens.
 
-CHXToken contract is implemented by inheriting from base contracts available in [OpenZeppelin](https://github.com/OpenZeppelin/zeppelin-solidity) library, as well as extending them by adding new functionality:
+`CHXToken` contract is implemented by inheriting from base contracts available in [OpenZeppelin](https://github.com/OpenZeppelin/zeppelin-solidity) library, as well as extending them by adding new functionality:
 
 - Batch transfers
 - Restricted transfers during token sale
-- Draining of stray Ether and other ERC20 tokens
+- Draining stray Ether and other ERC20 tokens
 
 
 ### Batch transfers
 
-To enable const-effective transfers of tokens from/to multiple addresses, without issuing multiple transactions, this contract implement following batch transfer functions:
+To enable cost-effective transfers of tokens from/to multiple addresses, without having to process multiple transactions, this contract implements following batch transfer functions:
 
 - `batchTransfer`
 - `batchTransferFrom`
@@ -32,24 +32,23 @@ To enable const-effective transfers of tokens from/to multiple addresses, withou
 - `batchIncreaseApproval`
 - `batchDecreaseApproval`
 
-These functions are looping over passed arrays of addresses/values and invoking equivalent standard ERC20 non-batch function in each iteration.
+These functions are iterating over passed arrays of addresses/values and invoking equivalent standard ERC20 non-batch function in each iteration.
 
 
 ### Restricted transfers during token sale
 
-Initial CHX token distribution will be done trough token sale process, which requires transfers have to
-be disabled for general public until the tokens sale is complete. To achieve this, `CHXToken` inherits from `SaleAware` contract.
+Initial CHX token distribution will be done trough token sale process, which requires transfers to be disabled for general public until the tokens sale is complete. To achieve this, `CHXToken` inherits from `SaleAware` contract.
 
 The purpose of `SaleAware` contract is to provide token sale related information/rules in an isolated way, which prevents pollution of the `CHXToken` code.
 
 `SaleAware` contract provides following functionality:
 
 - Token sale state (`tokenSaleClosed` state variable) and a way for token sale contract (`tokenSaleContract` state variable) to inform about token sale being closed (`closeTokenSale` function).
-- Function modifiers for restricting or preventing the function invocation depending on the state of the token sale (`onlyTokenSaleContract`, `restrictedDuringTokenSale`, `onlyDuringTokenSale`, `onlyAfterTokenSale`). This is used to enable token sale contract to execute transfers during token sale, which is needed for moving tokens to investors' addresses in exchange for received Ether.
-- Returning tokens for Ether refund. (more information will be provided in `CHXTokenSale` spec)
+- Function modifiers for restricting or preventing the function invocation depending on the state of the token sale (`onlyTokenSaleContract`, `restrictedDuringTokenSale`, `onlyDuringTokenSale`, `onlyAfterTokenSale`). This is used to enable token sale contract to execute transfers during token sale, which is needed for sending tokens to investors' addresses in exchange for received Ether.
+- Returning tokens for Ether refund. (more information will be provided in `CHXTokenSale` part below)
 
 
-### Draining of stray Ether and other ERC20 tokens
+### Draining stray Ether and other ERC20 tokens
 
 During the token sale, investors will send Ether to `CHXTokenSale` contract. However, `CHXToken` contract is not supposed to ever receive any Ether or other tokens. To prevent mistakenly sent Ether or tokens from being locked in `CHXToken` forever, two functions are provided to enable token contract owner to drain Ether or other ERC20 compatible tokens from `CHXToken` address.
 
@@ -79,7 +78,7 @@ Additionally, `CHXTokenSale` contract inherits from `Whitelistable` contract, wh
 
 ### Deployment
 
-Upon deploying `CHXTokenSale` contract, it's constructor will execute, resulting in following:
+Upon deploying `CHXTokenSale` contract, its constructor will execute, resulting in following:
 
 - State variables are set to their initial values.
 - `CHXToken` contract instance is created.
