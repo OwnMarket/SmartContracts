@@ -48,7 +48,7 @@ contract CHXTokenSale is Whitelistable {
         assert(PUBLIC_SALE_START_TIME < PUBLIC_SALE_END_TIME);
         assert(TOTAL_SUPPLY == SALE_CAP.add(RESERVE_FUND_TOKENS).add(FOUNDERS_TOKENS).add(ICO_COSTS_TOKENS));
 
-        saleOperator = SALE_OPERATOR_ADDRESS;
+        whitelistOperator = SALE_OPERATOR_ADDRESS;
 
         token = new CHXToken(TOTAL_SUPPLY, owner, TOKEN_REFUND_WALLET);
         assert(token.decimals() == 18); // Calculations are simplified by assuming 18 decimals (1 ETH = 10^18 WEI)

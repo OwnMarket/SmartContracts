@@ -4,7 +4,7 @@ import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
 contract Whitelistable is Ownable {
     mapping (address => bool) whitelist;
-    address saleOperator;
+    address whitelistOperator;
 
     event WhitelistStatusChanged(address indexed listedAddress, bool isWhitelisted);
 
@@ -18,7 +18,7 @@ contract Whitelistable is Ownable {
     }
 
     function setWhitelistStatus(address _address, bool _isWhitelisted) public {
-        require(msg.sender == owner || msg.sender == saleOperator);
+        require(msg.sender == owner || msg.sender == whitelistOperator);
 
         whitelist[_address] = _isWhitelisted;
         WhitelistStatusChanged(_address, _isWhitelisted);
