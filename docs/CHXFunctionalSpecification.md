@@ -9,6 +9,8 @@ There are two contracts taking part in CHX token distribution and usage:
 
 ## CHXToken Contract
 
+![CHX Token Contract Hierarchy](CHXTokenContractHierarchy.png)
+
 CHXToken is an [ERC20](https://theethereum.wiki/w/index.php/ERC20_Token_Standard) token contract, which keeps the records of CHX token holders' balances, and enables transfers of tokens.
 
 CHXToken contract is implemented by inheriting from base contracts available in [OpenZeppelin](https://github.com/OpenZeppelin/zeppelin-solidity) library, as well as extending them by adding new functionality:
