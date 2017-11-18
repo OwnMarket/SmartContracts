@@ -101,6 +101,14 @@ contract CHXTokenSale is Whitelistable {
         TokenPurchasedOffline(_investor, _tokens);
     }
 
+    function batchProcessOfflinePurchase(address[] _investors, uint[] _tokens) public onlyOwner {
+        require(_investors.length == _tokens.length);
+
+        for (uint i = 0; i < _investors.length; i++) {
+            processOfflinePurchase(_investors[i], _tokens[i]);
+        }
+    }
+
     function calculateTokens(uint _contribution) public view returns (uint) {
         return _contribution.mul(TOKEN_SALE_RATE);
     }
