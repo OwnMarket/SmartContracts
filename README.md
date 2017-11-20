@@ -24,17 +24,13 @@ $ npm install
 
 ## Running Tests
 
-Make sure to start fresh instance of TestRPC (see below) before running each test suite.
+Make sure to start a new instance of TestRPC (use `start_testrpc.sh` script) before running each of these test suites:
 
 ```
 $ truffle test ./test/CHXToken.js
 $ truffle test ./test/CHXTokenSale.js
 $ truffle test ./test/CHXTokenSaleRefund.js
 ```
-
-### TestRPC
-
-TestRPC instance can be started using the script `start_testrpc.sh`.
 
 Address | Role
 ---|---
