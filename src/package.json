@@ -4,6 +4,6 @@
     "description": "Chainium Smart Contracts",
     "private": true,
     "devDependencies": {
-        "zeppelin-solidity": "^1.3.0"
+        "zeppelin-solidity": "^1.4.0"
     }
 }

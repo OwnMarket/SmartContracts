@@ -1,44 +1,46 @@
 pragma solidity ^0.4.18;
 
 import 'zeppelin-solidity/contracts/token/BurnableToken.sol';
-import 'zeppelin-solidity/contracts/token/PausableToken.sol';
-import './SaleAware.sol';
+import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 
-contract CHXToken is BurnableToken, PausableToken, SaleAware {
+contract CHXToken is BurnableToken, Ownable {
     string public constant name = "Chainium";
     string public constant symbol = "CHX";
     uint8 public constant decimals = 18;
 
-    function CHXToken(uint _totalSupply, address _contractOwner, address _tokenRefundWallet)
+    bool public restricted = true;
+
+    function CHXToken()
         public
-        // msg.sender is token sale contract; CHXToken will be instantiated by CHXTokenSale.
-        SaleAware(msg.sender, _tokenRefundWallet)
     {
-        totalSupply = _totalSupply;
+        totalSupply = 100000000e18;
 
-        balances[tokenSaleContract] = totalSupply;
-        Transfer(0x0, tokenSaleContract, totalSupply);
-
-        transferOwnership(_contractOwner);
+        balances[owner] = totalSupply;
+        Transfer(0x0, owner, totalSupply);
     }
 
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Balance changes guarded with token sale aware logic
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    function burn(uint _value)
+    function setRestrictedState(bool _restricted)
         public
         onlyOwner
-        whenNotPaused
-        restrictedDuringTokenSale
     {
-        super.burn(_value);
+        restricted = _restricted;
     }
+
+    modifier onlyOwnerWhenRestricted() {
+        if (restricted) {
+            require(msg.sender == owner);
+        }
+        _;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Transfers
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function transfer(address _to, uint _value)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool)
     {
         require(_to != address(this));
@@ -47,7 +49,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function transferFrom(address _from, address _to, uint _value)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool)
     {
         require(_to != address(this));
@@ -56,7 +58,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function approve(address _spender, uint _value)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool)
     {
         return super.approve(_spender, _value);
@@ -64,7 +66,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function increaseApproval(address _spender, uint _addedValue)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool success)
     {
         return super.increaseApproval(_spender, _addedValue);
@@ -72,7 +74,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function decreaseApproval(address _spender, uint _subtractedValue)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool success)
     {
         return super.decreaseApproval(_spender, _subtractedValue);
@@ -85,7 +87,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function batchTransfer(address[] _recipients, uint[] _values)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool)
     {
         require(_recipients.length == _values.length);
@@ -99,7 +101,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function batchTransferFrom(address _from, address[] _recipients, uint[] _values)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool)
     {
         require(_recipients.length == _values.length);
@@ -113,7 +115,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function batchTransferFromMany(address[] _senders, address _to, uint[] _values)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool)
     {
         require(_senders.length == _values.length);
@@ -127,7 +129,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function batchTransferFromManyToMany(address[] _senders, address[] _recipients, uint[] _values)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool)
     {
         require(_senders.length == _recipients.length);
@@ -142,7 +144,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function batchApprove(address[] _spenders, uint[] _values)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool)
     {
         require(_spenders.length == _values.length);
@@ -156,7 +158,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function batchIncreaseApproval(address[] _spenders, uint[] _addedValues)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool)
     {
         require(_spenders.length == _addedValues.length);
@@ -170,7 +172,7 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
 
     function batchDecreaseApproval(address[] _spenders, uint[] _subtractedValues)
         public
-        restrictedDuringTokenSale
+        onlyOwnerWhenRestricted
         returns (bool)
     {
         require(_spenders.length == _subtractedValues.length);
@@ -186,6 +188,13 @@ contract CHXToken is BurnableToken, PausableToken, SaleAware {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Miscellaneous
     ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function burn(uint _value)
+        public
+        onlyOwner
+    {
+        super.burn(_value);
+    }
 
     // Enable recovery of ether sent by mistake to this contract's address.
     function drainStrayEther(uint _amount)

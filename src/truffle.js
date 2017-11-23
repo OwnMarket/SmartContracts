@@ -2,10 +2,10 @@ module.exports = {
     /*
     solc: {
         optimizer: {
-            enabled: true
+            enabled: true,
+            runs: 200
         }
     },
-    */
     networks: {
         development: {
             host: "localhost",
@@ -14,4 +14,5 @@ module.exports = {
             gas: 6700000
         }
     }
+    */
 };
