@@ -1,6 +1,6 @@
 # Chainium Smart Contracts
 
-This repository contains smart contract code for Chainium Token (CHX).
+This repository contains smart contract code for [Chainium](https://www.chainium.io) Token (CHX).
 
 [Functional Specification](docs/CHXFunctionalSpecification.md) document contains more details about smart contract functionality.
 
