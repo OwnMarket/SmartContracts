@@ -17,7 +17,7 @@ contract('CHXToken', accounts => {
     })
 
     it('initialized correctly', async () => {
-        const totalSupply = e18(100000000)
+        const totalSupply = e18(20000000)
         assert((await chxToken.totalSupply()).equals(totalSupply), 'Total supply mismatch')
         assert((await chxToken.balanceOf(admin)).equals(totalSupply), 'Admin balance mismatch')
         assert(await chxToken.restricted(), 'Should be restricted initially')

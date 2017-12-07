@@ -13,7 +13,7 @@ contract CHXToken is BurnableToken, Ownable {
     function CHXToken()
         public
     {
-        totalSupply = 100000000e18;
+        totalSupply = 20000000e18;
 
         balances[owner] = totalSupply;
         Transfer(0x0, owner, totalSupply);
