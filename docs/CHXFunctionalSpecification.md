@@ -29,7 +29,7 @@ These functions are iterating over passed arrays of addresses/values and invokin
 
 ### Transfer restriction
 
-Initial CHX token distribution will be done trough token sale process, which requires transfers to be disabled for general public until the tokens sale is complete. However, contract owner must still be able to transfer tokens to investors during the token sale. To achieve this, `CHXToken` implements following:
+Initial CHX token distribution will be done through token sale process, which requires transfers to be disabled for general public until the tokens sale is complete. However, contract owner must still be able to transfer tokens to investors during the token sale. To achieve this, `CHXToken` implements following:
 
 - `restricted` state variable.
 - `setRestrictedState` function, used to set value of `restricted` to `true` or `false`.
