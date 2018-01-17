@@ -86,8 +86,7 @@ contract CHXToken is BurnableToken, Ownable {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function batchTransfer(address[] _recipients, uint[] _values)
-        public
-        onlyOwnerWhenRestricted
+        external
         returns (bool)
     {
         require(_recipients.length == _values.length);
@@ -100,8 +99,7 @@ contract CHXToken is BurnableToken, Ownable {
     }
 
     function batchTransferFrom(address _from, address[] _recipients, uint[] _values)
-        public
-        onlyOwnerWhenRestricted
+        external
         returns (bool)
     {
         require(_recipients.length == _values.length);
@@ -114,8 +112,7 @@ contract CHXToken is BurnableToken, Ownable {
     }
 
     function batchTransferFromMany(address[] _senders, address _to, uint[] _values)
-        public
-        onlyOwnerWhenRestricted
+        external
         returns (bool)
     {
         require(_senders.length == _values.length);
@@ -128,8 +125,7 @@ contract CHXToken is BurnableToken, Ownable {
     }
 
     function batchTransferFromManyToMany(address[] _senders, address[] _recipients, uint[] _values)
-        public
-        onlyOwnerWhenRestricted
+        external
         returns (bool)
     {
         require(_senders.length == _recipients.length);
@@ -143,8 +139,7 @@ contract CHXToken is BurnableToken, Ownable {
     }
 
     function batchApprove(address[] _spenders, uint[] _values)
-        public
-        onlyOwnerWhenRestricted
+        external
         returns (bool)
     {
         require(_spenders.length == _values.length);
@@ -157,8 +152,7 @@ contract CHXToken is BurnableToken, Ownable {
     }
 
     function batchIncreaseApproval(address[] _spenders, uint[] _addedValues)
-        public
-        onlyOwnerWhenRestricted
+        external
         returns (bool)
     {
         require(_spenders.length == _addedValues.length);
@@ -171,8 +165,7 @@ contract CHXToken is BurnableToken, Ownable {
     }
 
     function batchDecreaseApproval(address[] _spenders, uint[] _subtractedValues)
-        public
-        onlyOwnerWhenRestricted
+        external
         returns (bool)
     {
         require(_spenders.length == _subtractedValues.length);
