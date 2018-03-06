@@ -1,5 +1,5 @@
-var CHXToken = artifacts.require("./CHXToken.sol");
+var CHXDeployment = artifacts.require("./CHXDeployment.sol");
 
 module.exports = function (deployer) {
-    deployer.deploy(CHXToken);
+    deployer.deploy(CHXDeployment);
 };

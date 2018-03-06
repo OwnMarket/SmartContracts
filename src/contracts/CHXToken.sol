@@ -8,29 +8,50 @@ contract CHXToken is BurnableToken, Ownable {
     string public constant symbol = "CHX";
     uint8 public constant decimals = 18;
 
-    bool public restricted = true;
+    bool public isRestricted = true;
+    mapping (address => bool) public unrestricted;
 
-    function CHXToken()
+    function CHXToken(address _owner)
         public
     {
-        totalSupply = 20000000e18;
+        transferOwnership(_owner);
 
+        totalSupply = 200000000e18;
         balances[owner] = totalSupply;
         Transfer(0x0, owner, totalSupply);
     }
 
-    function setRestrictedState(bool _restricted)
+    function setRestrictedState(bool _isRestricted)
         public
         onlyOwner
     {
-        restricted = _restricted;
+        isRestricted = _isRestricted;
     }
 
-    modifier onlyOwnerWhenRestricted() {
-        if (restricted) {
-            require(msg.sender == owner);
+    function setUnrestrictedAddress(address _address, bool _isUnrestricted)
+        public
+        onlyOwner
+    {
+        unrestricted[_address] = _isUnrestricted;
+    }
+
+    modifier restricted() {
+        if (isRestricted) {
+            require(unrestricted[msg.sender]);
         }
         _;
+    }
+
+    function transferOwnership(address newOwner)
+        public
+        onlyOwner
+    {
+        require(newOwner != owner);
+
+        unrestricted[owner] = false;
+        unrestricted[newOwner] = true;
+
+        super.transferOwnership(newOwner);
     }
 
 
@@ -40,7 +61,7 @@ contract CHXToken is BurnableToken, Ownable {
 
     function transfer(address _to, uint _value)
         public
-        onlyOwnerWhenRestricted
+        restricted
         returns (bool)
     {
         require(_to != address(this));
@@ -49,7 +70,7 @@ contract CHXToken is BurnableToken, Ownable {
 
     function transferFrom(address _from, address _to, uint _value)
         public
-        onlyOwnerWhenRestricted
+        restricted
         returns (bool)
     {
         require(_to != address(this));
@@ -58,7 +79,7 @@ contract CHXToken is BurnableToken, Ownable {
 
     function approve(address _spender, uint _value)
         public
-        onlyOwnerWhenRestricted
+        restricted
         returns (bool)
     {
         return super.approve(_spender, _value);
@@ -66,7 +87,7 @@ contract CHXToken is BurnableToken, Ownable {
 
     function increaseApproval(address _spender, uint _addedValue)
         public
-        onlyOwnerWhenRestricted
+        restricted
         returns (bool success)
     {
         return super.increaseApproval(_spender, _addedValue);
@@ -74,7 +95,7 @@ contract CHXToken is BurnableToken, Ownable {
 
     function decreaseApproval(address _spender, uint _subtractedValue)
         public
-        onlyOwnerWhenRestricted
+        restricted
         returns (bool success)
     {
         return super.decreaseApproval(_spender, _subtractedValue);
