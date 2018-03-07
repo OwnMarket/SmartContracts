@@ -35,6 +35,19 @@ contract CHXTokenSale is Whitelistable {
         assert(tokenContract.decimals() == 18); // Calculations assume 18 decimals (1 ETH = 10^18 WEI)
     }
 
+    function transferOwnership(address newOwner)
+        public
+        onlyOwner
+    {
+        require(newOwner != owner);
+
+        if (whitelistAdmin == owner) {
+            setWhitelistAdmin(newOwner);
+        }
+
+        super.transferOwnership(newOwner);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Sale
