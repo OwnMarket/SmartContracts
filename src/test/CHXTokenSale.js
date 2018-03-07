@@ -6,7 +6,7 @@ const CHXToken = artifacts.require('./CHXToken.sol')
 const CHXTokenSale = artifacts.require('./CHXTokenSale.sol')
 
 contract('CHXTokenSale', accounts => {
-    const admin = accounts[0]
+    const owner = accounts[0]
     const investor1 = accounts[1]
     const investor2 = accounts[2]
     const collectedEtherWallet = accounts[8]
@@ -56,7 +56,7 @@ contract('CHXTokenSale', accounts => {
         await chxTokenSale.setSaleTime(
             evmTime.add(helpers.duration.hours(1)),
             evmTime.add(helpers.duration.hours(2)),
-            {from: admin})
+            {from: owner})
 
         // ACT
         await helpers.shouldFail(
@@ -75,7 +75,7 @@ contract('CHXTokenSale', accounts => {
         await chxTokenSale.setSaleTime(
             evmTime.sub(helpers.duration.hours(2)),
             evmTime.sub(helpers.duration.hours(1)),
-            {from: admin})
+            {from: owner})
 
         // ACT
         await helpers.shouldFail(
@@ -95,9 +95,9 @@ contract('CHXTokenSale', accounts => {
         await chxTokenSale.setSaleTime(
             evmTime.sub(helpers.duration.hours(2)),
             evmTime.add(helpers.duration.hours(2)),
-            {from: admin})
-        await chxTokenSale.setPhase1DurationInHours(3, {from: admin}) // In phase 1
-        await chxTokenSale.addToWhitelist([investor1], {from: admin})
+            {from: owner})
+        await chxTokenSale.setPhase1DurationInHours(3, {from: owner}) // In phase 1
+        await chxTokenSale.addToWhitelist([investor1], {from: owner})
 
         // ACT
         await chxTokenSale.sendTransaction({from: investor1, value: contribution, gasPrice: gasPrice})
@@ -169,7 +169,7 @@ contract('CHXTokenSale', accounts => {
         const contribution = web3.toWei(9500, "finney") // 0.5 ETH invested in phase 1
         const tokens = calculateTokens(contribution)
         const investor1BalanceBefore = await chxToken.balanceOf(investor1)
-        await chxTokenSale.setPhase1DurationInHours(1, {from: admin}) // In phase 2
+        await chxTokenSale.setPhase1DurationInHours(1, {from: owner}) // In phase 2
 
         // ACT
         await chxTokenSale.sendTransaction({from: investor1, value: contribution, gasPrice: gasPrice})
@@ -197,7 +197,7 @@ contract('CHXTokenSale', accounts => {
         // ARRANGE
         const contribution1 = web3.toWei(10, "ether") // Investor 1
         const contribution2 = web3.toWei(1, "ether") // Investor 2
-        await chxTokenSale.addToWhitelist([investor2], {from: admin})
+        await chxTokenSale.addToWhitelist([investor2], {from: owner})
 
         // ACT
         await chxTokenSale.sendTransaction({from: investor2, value: contribution2, gasPrice: gasPrice})
@@ -236,7 +236,7 @@ contract('CHXTokenSale', accounts => {
         const chxTokenSaleBalanceBefore = web3.eth.getBalance(chxTokenSale.address)
 
         // ACT
-        await chxTokenSale.sendCollectedEther(collectedEtherWallet, {from: admin})
+        await chxTokenSale.sendCollectedEther(collectedEtherWallet, {from: owner})
 
         // ASSERT
         const chxTokenSaleBalanceAfter = web3.eth.getBalance(chxTokenSale.address)
@@ -251,21 +251,21 @@ contract('CHXTokenSale', accounts => {
 
     it('sends remaining unsold tokens to provided address', async () => {
         // ARRANGE
-        const adminTokenBalanceBefore = await chxToken.balanceOf(admin)
+        const ownerTokenBalanceBefore = await chxToken.balanceOf(owner)
         const chxTokenSaleTokenBalanceBefore = await chxToken.balanceOf(chxTokenSale.address)
         const tokensSold = await chxTokenSale.tokensSold()
         const remainingTokens = tokensForSale.sub(tokensSold);
         assert(chxTokenSaleTokenBalanceBefore.equals(remainingTokens), 'Remaining tokens calculation mismatch')
 
         // ACT
-        await chxTokenSale.sendRemainingTokens(admin, {from: admin})
+        await chxTokenSale.sendRemainingTokens(owner, {from: owner})
 
         // ASSERT
         const chxTokenSaleTokenBalanceAfter = await chxToken.balanceOf(chxTokenSale.address)
-        const adminTokenBalanceAfter = await chxToken.balanceOf(admin)
+        const ownerTokenBalanceAfter = await chxToken.balanceOf(owner)
 
         assert(chxTokenSaleTokenBalanceAfter.equals(0), 'chxTokenSaleTokenBalanceAfter mismatch')
-        assert(adminTokenBalanceBefore.add(remainingTokens).equals(adminTokenBalanceAfter),
-            'adminTokenBalanceAfter mismatch')
+        assert(ownerTokenBalanceBefore.add(remainingTokens).equals(ownerTokenBalanceAfter),
+            'ownerTokenBalanceAfter mismatch')
     })
 })
