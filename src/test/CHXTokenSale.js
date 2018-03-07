@@ -9,6 +9,7 @@ contract('CHXTokenSale', accounts => {
     const admin = accounts[0]
     const investor1 = accounts[1]
     const investor2 = accounts[2]
+    const collectedEtherWallet = accounts[8]
     const whitelistAdmin = accounts[9]
 
     const calculateTokens = contribution => {
@@ -18,6 +19,7 @@ contract('CHXTokenSale', accounts => {
     }
 
     const gasPrice = web3.toBigNumber(15e9) // 15 GWEI
+    const tokensForSale = e18(100000000)
 
     let chxDeployment
     let chxToken
@@ -35,7 +37,6 @@ contract('CHXTokenSale', accounts => {
         const maxContributionPhase1 = web3.toWei(500, 'finney') // 0.5 ETH
         const maxContributionPhase2 = web3.toWei(10, 'ether')
         const phase1DurationInHours = web3.toBigNumber(24)
-        const tokensForSale = e18(70000000)
         await chxToken.transfer(chxTokenSale.address, tokensForSale)
         await chxToken.setUnrestrictedAddress(chxTokenSale.address, true)
 
@@ -110,7 +111,7 @@ contract('CHXTokenSale', accounts => {
         // ARRANGE
         const contribution = web3.toWei(500, "finney")
         const investor1BalanceBefore = await chxToken.balanceOf(investor1)
-        const highGasPrice = web3.toBigNumber(50000000000) // 50 GWEI
+        const highGasPrice = web3.toBigNumber(50e9) // 50 GWEI
 
         // ACT
         await helpers.shouldFail(
@@ -224,5 +225,47 @@ contract('CHXTokenSale', accounts => {
         assert(tokenAllocations1.equals(investor1Balance), 'tokenAllocations1 mismatch')
         assert(tokenAllocations2.equals(investor2Balance), 'tokenAllocations2 mismatch')
         assert(tokenAllocations1.add(tokenAllocations2).equals(tokensSold), 'tokensSold mismatch')
+    })
+
+    it('sends collected ether to provided address', async () => {
+        // ARRANGE
+        const etherContributions1 = await chxTokenSale.etherContributions(investor1) // Investor 1
+        const etherContributions2 = await chxTokenSale.etherContributions(investor2) // Investor 2
+        const totalContributions = etherContributions1.add(etherContributions2)
+        const collectedEtherWalletBalanceBefore = web3.eth.getBalance(collectedEtherWallet)
+        const chxTokenSaleBalanceBefore = web3.eth.getBalance(chxTokenSale.address)
+
+        // ACT
+        await chxTokenSale.sendCollectedEther(collectedEtherWallet, {from: admin})
+
+        // ASSERT
+        const chxTokenSaleBalanceAfter = web3.eth.getBalance(chxTokenSale.address)
+        const collectedEtherWalletBalanceAfter = web3.eth.getBalance(collectedEtherWallet)
+
+        assert(chxTokenSaleBalanceAfter.equals(0), 'chxTokenSaleBalanceAfter should be zero')
+        assert(chxTokenSaleBalanceBefore.gt(chxTokenSaleBalanceAfter),
+            'chxTokenSaleBalanceAfter should have decreased')
+        assert(collectedEtherWalletBalanceBefore.add(totalContributions).equals(collectedEtherWalletBalanceAfter),
+            'collectedEtherWallet ETH balance mismatch')
+    })
+
+    it('sends remaining unsold tokens to provided address', async () => {
+        // ARRANGE
+        const adminTokenBalanceBefore = await chxToken.balanceOf(admin)
+        const chxTokenSaleTokenBalanceBefore = await chxToken.balanceOf(chxTokenSale.address)
+        const tokensSold = await chxTokenSale.tokensSold()
+        const remainingTokens = tokensForSale.sub(tokensSold);
+        assert(chxTokenSaleTokenBalanceBefore.equals(remainingTokens), 'Remaining tokens calculation mismatch')
+
+        // ACT
+        await chxTokenSale.sendRemainingTokens(admin, {from: admin})
+
+        // ASSERT
+        const chxTokenSaleTokenBalanceAfter = await chxToken.balanceOf(chxTokenSale.address)
+        const adminTokenBalanceAfter = await chxToken.balanceOf(admin)
+
+        assert(chxTokenSaleTokenBalanceAfter.equals(0), 'chxTokenSaleTokenBalanceAfter mismatch')
+        assert(adminTokenBalanceBefore.add(remainingTokens).equals(adminTokenBalanceAfter),
+            'adminTokenBalanceAfter mismatch')
     })
 })
