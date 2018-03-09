@@ -1,7 +1,6 @@
 const helpers = require('./helpers.js')
 const e18 = helpers.e18
 
-const CHXDeployment = artifacts.require('./CHXDeployment.sol')
 const CHXToken = artifacts.require('./CHXToken.sol')
 const CHXTokenSale = artifacts.require('./CHXTokenSale.sol')
 
@@ -12,12 +11,12 @@ contract('Whitelistable', accounts => {
     const investor3 = accounts[3]
     const whitelistAdmin = accounts[9]
 
-    let chxDeployment
+    let chxToken
     let chxTokenSale
 
     beforeEach(async () => {
-        chxDeployment = chxDeployment || await CHXDeployment.deployed()
-        chxTokenSale = chxTokenSale || await CHXTokenSale.at(await chxDeployment.tokenSaleContract.call())
+        chxToken = chxToken || await CHXToken.deployed()
+        chxTokenSale = chxTokenSale || await CHXTokenSale.deployed()
     })
 
     it('initializes correctly', async () => {

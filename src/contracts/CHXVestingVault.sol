@@ -21,14 +21,14 @@ contract CHXVestingVault {
     }
 
     function changeBeneficiary(address _newBeneficiary)
-        public
+        external
         onlyBeneficiary
     {
         beneficiary = _newBeneficiary;
     }
 
     function withdrawTokens()
-        public
+        external
         onlyBeneficiary
     {
         require(vestingTime <= now);
@@ -41,7 +41,7 @@ contract CHXVestingVault {
 
     // Enable recovery of ether sent by mistake to this contract's address.
     function drainStrayEther(uint _amount)
-        public
+        external
         onlyBeneficiary
         returns (bool)
     {

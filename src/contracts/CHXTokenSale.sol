@@ -26,13 +26,18 @@ contract CHXTokenSale is Whitelistable {
     uint public etherCollected;
     uint public tokensSold;
 
-    function CHXTokenSale(address _owner, address _tokenContractAddress)
+    function CHXTokenSale()
         public
     {
-        transferOwnership(_owner);
+    }
 
+    function setTokenContract(address _tokenContractAddress)
+        external
+        onlyOwner
+    {
+        require(_tokenContractAddress != address(0));
         tokenContract = CHXToken(_tokenContractAddress);
-        assert(tokenContract.decimals() == 18); // Calculations assume 18 decimals (1 ETH = 10^18 WEI)
+        require(tokenContract.decimals() == 18); // Calculations assume 18 decimals (1 ETH = 10^18 WEI)
     }
 
     function transferOwnership(address newOwner)
@@ -83,7 +88,7 @@ contract CHXTokenSale is Whitelistable {
     }
 
     function sendCollectedEther(address _recipient)
-        public
+        external
         onlyOwner
     {
         if (this.balance > 0) {
@@ -92,7 +97,7 @@ contract CHXTokenSale is Whitelistable {
     }
 
     function sendRemainingTokens(address _recipient)
-        public
+        external
         onlyOwner
     {
         uint unsoldTokens = tokenContract.balanceOf(this);
@@ -107,7 +112,7 @@ contract CHXTokenSale is Whitelistable {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function setSaleTime(uint _newStartTime, uint _newEndTime)
-        public
+        external
         onlyOwner
     {
         require(_newStartTime <= _newEndTime);
@@ -116,7 +121,7 @@ contract CHXTokenSale is Whitelistable {
     }
 
     function setMaxGasPrice(uint _newMaxGasPrice)
-        public
+        external
         onlyOwner
     {
         require(_newMaxGasPrice > 0);
@@ -124,7 +129,7 @@ contract CHXTokenSale is Whitelistable {
     }
 
     function setMinContribution(uint _newMinContribution)
-        public
+        external
         onlyOwner
     {
         require(_newMinContribution > 0);
@@ -132,7 +137,7 @@ contract CHXTokenSale is Whitelistable {
     }
 
     function setMaxContributionPhase1(uint _newMaxContributionPhase1)
-        public
+        external
         onlyOwner
     {
         require(_newMaxContributionPhase1 > minContribution);
@@ -140,7 +145,7 @@ contract CHXTokenSale is Whitelistable {
     }
 
     function setMaxContributionPhase2(uint _newMaxContributionPhase2)
-        public
+        external
         onlyOwner
     {
         require(_newMaxContributionPhase2 > minContribution);
@@ -148,7 +153,7 @@ contract CHXTokenSale is Whitelistable {
     }
 
     function setPhase1DurationInHours(uint _newPhase1DurationInHours)
-        public
+        external
         onlyOwner
     {
         require(_newPhase1DurationInHours > 0);

@@ -9,49 +9,44 @@ contract CHXToken is BurnableToken, Ownable {
     uint8 public constant decimals = 18;
 
     bool public isRestricted = true;
-    mapping (address => bool) public unrestricted;
+    address public tokenSaleContractAddress;
 
-    function CHXToken(address _owner)
+    function CHXToken()
         public
     {
-        transferOwnership(_owner);
-
         totalSupply = 200000000e18;
         balances[owner] = totalSupply;
-        Transfer(0x0, owner, totalSupply);
+        Transfer(address(0), owner, totalSupply);
     }
 
+    function setTokenSaleContractAddress(address _tokenSaleContractAddress)
+        external
+        onlyOwner
+    {
+        require(_tokenSaleContractAddress != address(0));
+        tokenSaleContractAddress = _tokenSaleContractAddress;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Transfer Restriction
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
     function setRestrictedState(bool _isRestricted)
-        public
+        external
         onlyOwner
     {
         isRestricted = _isRestricted;
     }
 
-    function setUnrestrictedAddress(address _address, bool _isUnrestricted)
-        public
-        onlyOwner
-    {
-        unrestricted[_address] = _isUnrestricted;
-    }
-
     modifier restricted() {
         if (isRestricted) {
-            require(unrestricted[msg.sender]);
+            require(
+                msg.sender == owner ||
+                (msg.sender == tokenSaleContractAddress && tokenSaleContractAddress != address(0))
+            );
         }
         _;
-    }
-
-    function transferOwnership(address newOwner)
-        public
-        onlyOwner
-    {
-        require(newOwner != owner);
-
-        unrestricted[owner] = false;
-        unrestricted[newOwner] = true;
-
-        super.transferOwnership(newOwner);
     }
 
 
@@ -212,7 +207,7 @@ contract CHXToken is BurnableToken, Ownable {
 
     // Enable recovery of ether sent by mistake to this contract's address.
     function drainStrayEther(uint _amount)
-        public
+        external
         onlyOwner
         returns (bool)
     {
@@ -222,7 +217,7 @@ contract CHXToken is BurnableToken, Ownable {
 
     // Enable recovery of any ERC20 compatible token, sent by mistake to this contract's address.
     function drainStrayTokens(ERC20Basic _token, uint _amount)
-        public
+        external
         onlyOwner
         returns (bool)
     {

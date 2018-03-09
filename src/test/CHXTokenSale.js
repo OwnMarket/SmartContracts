@@ -1,7 +1,6 @@
 const helpers = require('./helpers.js')
 const e18 = helpers.e18
 
-const CHXDeployment = artifacts.require('./CHXDeployment.sol')
 const CHXToken = artifacts.require('./CHXToken.sol')
 const CHXTokenSale = artifacts.require('./CHXTokenSale.sol')
 
@@ -15,20 +14,20 @@ contract('CHXTokenSale', accounts => {
     const calculateTokens = contribution => {
         const tokenPrice = web3.toWei(170, "szabo")
         const multiplier = e18(1)
-        return web3.toBigNumber(contribution).mul(multiplier).div(tokenPrice).toFixed(0, 1) // ROUND_DOWN
+        return web3.toBigNumber(
+            web3.toBigNumber(contribution).mul(multiplier).div(tokenPrice).toFixed(0, 1) // ROUND_DOWN
+        )
     }
 
     const gasPrice = web3.toBigNumber(15e9) // 15 GWEI
-    const tokensForSale = e18(100000000)
+    const tokensForSale = e18(100000)
 
-    let chxDeployment
     let chxToken
     let chxTokenSale
 
     beforeEach(async () => {
-        chxDeployment = chxDeployment || await CHXDeployment.deployed()
-        chxToken = chxToken || await CHXToken.at(await chxDeployment.tokenContract.call())
-        chxTokenSale = chxTokenSale || await CHXTokenSale.at(await chxDeployment.tokenSaleContract.call())
+        chxToken = chxToken || await CHXToken.deployed()
+        chxTokenSale = chxTokenSale || await CHXTokenSale.deployed()
     })
 
     it('initializes correctly', async () => {
@@ -37,15 +36,27 @@ contract('CHXTokenSale', accounts => {
         const maxContributionPhase1 = web3.toWei(500, 'finney') // 0.5 ETH
         const maxContributionPhase2 = web3.toWei(10, 'ether')
         const phase1DurationInHours = web3.toBigNumber(24)
-        await chxToken.transfer(chxTokenSale.address, tokensForSale)
-        await chxToken.setUnrestrictedAddress(chxTokenSale.address, true)
 
-        assert((await chxToken.balanceOf(chxTokenSale.address)).equals(tokensForSale), 'Tokens for sale mismatch')
-        assert((await chxTokenSale.maxGasPrice()).equals(maxGasPrice), 'maxGasPrice mismatch')
-        assert((await chxTokenSale.minContribution()).equals(minContribution), 'minContribution mismatch')
-        assert((await chxTokenSale.maxContributionPhase1()).equals(maxContributionPhase1), 'maxContributionPhase1 mismatch')
-        assert((await chxTokenSale.maxContributionPhase2()).equals(maxContributionPhase2), 'maxContributionPhase2 mismatch')
-        assert((await chxTokenSale.phase1DurationInHours()).equals(phase1DurationInHours), 'phase1DurationInHours mismatch')
+        await chxTokenSale.setTokenContract(chxToken.address)
+        await chxToken.setTokenSaleContractAddress(chxTokenSale.address)
+        await chxToken.transfer(chxTokenSale.address, tokensForSale)
+
+        assert.equal(await chxToken.tokenSaleContractAddress(), chxTokenSale.address,
+            'CHXToken.tokenSaleContractAddress mismatch')
+        assert.equal(await chxTokenSale.tokenContract(), chxToken.address,
+            'CHXTokenSale.tokenContract mismatch')
+        assert((await chxToken.balanceOf(chxTokenSale.address)).equals(tokensForSale),
+            'Tokens for sale mismatch')
+        assert((await chxTokenSale.maxGasPrice()).equals(maxGasPrice),
+            'maxGasPrice mismatch')
+        assert((await chxTokenSale.minContribution()).equals(minContribution),
+            'minContribution mismatch')
+        assert((await chxTokenSale.maxContributionPhase1()).equals(maxContributionPhase1),
+            'maxContributionPhase1 mismatch')
+        assert((await chxTokenSale.maxContributionPhase2()).equals(maxContributionPhase2),
+            'maxContributionPhase2 mismatch')
+        assert((await chxTokenSale.phase1DurationInHours()).equals(phase1DurationInHours),
+            'phase1DurationInHours mismatch')
     })
 
     it('rejects contributions before saleStartTime', async () => {
@@ -193,6 +204,24 @@ contract('CHXTokenSale', accounts => {
         assert(investor1BalanceBefore.equals(investor1BalanceAfter), 'Investor 1 balance mismatch')
     })
 
+    it('rejects contributions over total number of available tokens for sale', async () => {
+        // ARRANGE
+        await chxTokenSale.setMaxContributionPhase2(web3.toWei(100, "ether"))
+        const investor1TokenBalanceBefore = await chxToken.balanceOf(investor1)
+        const contribution = web3.toWei(50, "ether")
+        const investor1EtherBalance = web3.eth.getBalance(investor1)
+        assert(investor1EtherBalance.gt(contribution), 'Not enough ETH for test')
+        assert(calculateTokens(contribution).gt(tokensForSale), 'Too low contribution for test')
+
+        // ACT
+        await helpers.shouldFail(
+            chxTokenSale.sendTransaction({from: investor1, value: contribution, gasPrice: gasPrice}))
+
+        // ASSERT
+        const investor1TokenBalanceAfter = await chxToken.balanceOf(investor1)
+        assert(investor1TokenBalanceBefore.equals(investor1TokenBalanceAfter), 'Investor 1 balance mismatch')
+    })
+
     it('maintains sum of ETH contributions per investor and total collected ETH', async () => {
         // ARRANGE
         const contribution1 = web3.toWei(10, "ether") // Investor 1
@@ -254,7 +283,7 @@ contract('CHXTokenSale', accounts => {
         const ownerTokenBalanceBefore = await chxToken.balanceOf(owner)
         const chxTokenSaleTokenBalanceBefore = await chxToken.balanceOf(chxTokenSale.address)
         const tokensSold = await chxTokenSale.tokensSold()
-        const remainingTokens = tokensForSale.sub(tokensSold);
+        const remainingTokens = tokensForSale.sub(tokensSold)
         assert(chxTokenSaleTokenBalanceBefore.equals(remainingTokens), 'Remaining tokens calculation mismatch')
 
         // ACT

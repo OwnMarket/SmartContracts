@@ -24,7 +24,7 @@ contract Whitelistable is Ownable {
     }
 
     function isWhitelisted(address _address)
-        public
+        external
         view
         returns (bool)
     {
@@ -32,7 +32,7 @@ contract Whitelistable is Ownable {
     }
 
     function addToWhitelist(address[] _addresses)
-        public
+        external
         onlyOwnerOrWhitelistAdmin
     {
         for (uint i = 0; i < _addresses.length; i++) {
@@ -41,7 +41,7 @@ contract Whitelistable is Ownable {
     }
 
     function removeFromWhitelist(address[] _addresses)
-        public
+        external
         onlyOwnerOrWhitelistAdmin
     {
         for (uint i = 0; i < _addresses.length; i++) {
@@ -53,7 +53,7 @@ contract Whitelistable is Ownable {
         public
         onlyOwnerOrWhitelistAdmin
     {
-        require(_newAdmin != 0x0);
+        require(_newAdmin != address(0));
         whitelistAdmin = _newAdmin;
     }
 }

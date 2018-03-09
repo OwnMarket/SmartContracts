@@ -1,7 +1,6 @@
 const helpers = require('./helpers.js')
 const e18 = helpers.e18
 
-const CHXDeployment = artifacts.require('./CHXDeployment.sol')
 const CHXToken = artifacts.require('./CHXToken.sol')
 
 contract('CHXToken', accounts => {
@@ -11,12 +10,10 @@ contract('CHXToken', accounts => {
     const investor3 = accounts[3]
     const investor4 = accounts[4]
 
-    let chxDeployment
     let chxToken
 
     beforeEach(async () => {
-        chxDeployment = chxDeployment || await CHXDeployment.deployed()
-        chxToken = chxToken || await CHXToken.at(await chxDeployment.tokenContract.call())
+        chxToken = chxToken || await CHXToken.deployed()
     })
 
     it('initializes correctly', async () => {
@@ -33,7 +30,7 @@ contract('CHXToken', accounts => {
     it('allows transfers for owner even if restricted', async () => {
         // ARRANGE
         const investor1BalanceBefore = await chxToken.balanceOf(investor1)
-        const tokenQty = e18(2000);
+        const tokenQty = e18(2000)
 
         // ACT
         await chxToken.transfer(investor1, tokenQty)
@@ -47,10 +44,10 @@ contract('CHXToken', accounts => {
         // ARRANGE
         const investor1BalanceBefore = await chxToken.balanceOf(investor1)
         const investor2BalanceBefore = await chxToken.balanceOf(investor2)
-        const tokenQty = e18(500);
+        const tokenQty = e18(500)
 
         await chxToken.setRestrictedState(false)
-        assert.equal(await chxToken.isRestricted(), false, 'Should not be restricted');
+        assert.equal(await chxToken.isRestricted(), false, 'Should not be restricted')
 
         // ACT
         await chxToken.transfer(investor2, tokenQty, {from: investor1})
@@ -211,7 +208,7 @@ contract('CHXToken', accounts => {
         // ARRANGE
         const totalSupplyBefore = await chxToken.totalSupply()
         const adminBalanceBefore = await chxToken.balanceOf(admin)
-        const burnQty = e18(1000);
+        const burnQty = e18(1000)
 
         // ACT
         await chxToken.burn(burnQty)
