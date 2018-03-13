@@ -31,9 +31,11 @@ These functions are iterating over passed arrays of addresses/values and invokin
 
 Initial CHX token distribution will be done through token sale process, which requires transfers to be disabled for general public until the tokens sale is complete. However, contract owner must still be able to transfer tokens to investors during the token sale. To achieve this, `CHXToken` implements following:
 
-- `restricted` state variable.
-- `setRestrictedState` function, used to set value of `restricted` to `true` or `false`.
-- `onlyOwnerWhenRestricted` function modifier, used to restrict function invocation to owner only, depending on the state of the `restricted` variable. This modifier is applied to all transfer related functions.
+- `isRestricted` state variable.
+- `setRestrictedState` function, used to set value of `isRestricted` to `true` or `false`.
+- `tokenSaleContractAddress` variable.
+- `setTokenSaleContractAddress` function, used to set value of `tokenSaleContractAddress` variable to the address of the deployed token sale contract.
+- `restricted` function modifier, used to restrict function invocation to owner and tokenSaleContractAddress only, depending on the state of the `isRestricted` variable. This modifier is applied to all transfer related functions.
 
 
 ### Draining stray Ether and other ERC20 tokens
