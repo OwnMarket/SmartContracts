@@ -10,6 +10,10 @@ contract CHXVestingVault {
     function CHXVestingVault(address _tokenContractAddress, address _beneficiary, uint _vestingTime)
         public
     {
+        require(_tokenContractAddress != address(0));
+        require(_beneficiary != address(0));
+        require(_vestingTime > now);
+
         tokenContract = CHXToken(_tokenContractAddress);
         beneficiary = _beneficiary;
         vestingTime = _vestingTime;

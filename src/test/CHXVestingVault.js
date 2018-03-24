@@ -28,6 +28,36 @@ contract('CHXVestingVault', accounts => {
         await chxToken.setRestrictedState(false) // Enable transfers
     })
 
+    it('rejects creation of new CHXVestingVault with invalid beneficiary address', async () => {
+        // ARRANGE
+        const evmTime = web3.toBigNumber(helpers.lastEVMTime())
+        const vestingTime = evmTime.add(helpers.duration.days(1))
+        const vaultCountBefore = await chxVestingVaultFactory.numberOfVaultsCreated()
+        assert(vaultCountBefore.equals(0))
+
+        // ACT
+        await helpers.shouldFail(chxVestingVaultFactory.createCHXVestingVault(0x0, vestingTime))
+
+        // ASSERT
+        const vaultCountAfter = await chxVestingVaultFactory.numberOfVaultsCreated()
+        assert(vaultCountAfter.equals(vaultCountBefore), 'Vault should not have been created')
+    })
+
+    it('rejects creation of new CHXVestingVault with time in the past', async () => {
+        // ARRANGE
+        const evmTime = web3.toBigNumber(helpers.lastEVMTime())
+        const vestingTime = evmTime.sub(helpers.duration.days(1))
+        const vaultCountBefore = await chxVestingVaultFactory.numberOfVaultsCreated()
+        assert(vaultCountBefore.equals(0))
+
+        // ACT
+        await helpers.shouldFail(chxVestingVaultFactory.createCHXVestingVault(beneficiary1, vestingTime))
+
+        // ASSERT
+        const vaultCountAfter = await chxVestingVaultFactory.numberOfVaultsCreated()
+        assert(vaultCountAfter.equals(vaultCountBefore), 'Vault should not have been created')
+    })
+
     it('creates new CHXVestingVault', async () => {
         // ARRANGE
         const evmTime = web3.toBigNumber(helpers.lastEVMTime())
