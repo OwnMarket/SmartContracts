@@ -24,15 +24,15 @@ contract('CHXSwap', accounts => {
 
     it('changes mapped address', async () => {
         // ARRANGE
-        const chxAddress1Before = await chxSwap.getMappedAddress(ethAddress1)
-        const chxAddress2Before = await chxSwap.getMappedAddress(ethAddress2)
+        const chxAddress1Before = await chxSwap.mappedAddresses(ethAddress1)
+        const chxAddress2Before = await chxSwap.mappedAddresses(ethAddress2)
 
         // ACT
         await chxSwap.mapAddress(chxAddress1, {from: ethAddress1})
 
         // ASSERT
-        const chxAddress1After = await chxSwap.getMappedAddress(ethAddress1)
-        const chxAddress2After = await chxSwap.getMappedAddress(ethAddress2)
+        const chxAddress1After = await chxSwap.mappedAddresses(ethAddress1)
+        const chxAddress2After = await chxSwap.mappedAddresses(ethAddress2)
 
         assert.notEqual(chxAddress1After, chxAddress1Before, 'Mapped address 1 expected to change')
         assert.equal(chxAddress1After, chxAddress1, 'Mapped address 1 mismatch')
@@ -42,16 +42,16 @@ contract('CHXSwap', accounts => {
 
     it('changes mapped address for all senders', async () => {
         // ARRANGE
-        const chxAddress1Before = await chxSwap.getMappedAddress(ethAddress1)
-        const chxAddress2Before = await chxSwap.getMappedAddress(ethAddress2)
+        const chxAddress1Before = await chxSwap.mappedAddresses(ethAddress1)
+        const chxAddress2Before = await chxSwap.mappedAddresses(ethAddress2)
 
         // ACT
         await chxSwap.mapAddress(chxAddress1, {from: ethAddress1})
         await chxSwap.mapAddress(chxAddress2, {from: ethAddress2})
 
         // ASSERT
-        const chxAddress1After = await chxSwap.getMappedAddress(ethAddress1)
-        const chxAddress2After = await chxSwap.getMappedAddress(ethAddress2)
+        const chxAddress1After = await chxSwap.mappedAddresses(ethAddress1)
+        const chxAddress2After = await chxSwap.mappedAddresses(ethAddress2)
 
         assert.notEqual(chxAddress1After, chxAddress1Before, 'Mapped address 1 expected to change')
         assert.equal(chxAddress1After, chxAddress1, 'Mapped address 1 mismatch')
@@ -62,16 +62,16 @@ contract('CHXSwap', accounts => {
 
     it('updates mapped address on subsequent submission', async () => {
         // ARRANGE
-        const chxAddress1Before = await chxSwap.getMappedAddress(ethAddress1)
-        const chxAddress2Before = await chxSwap.getMappedAddress(ethAddress2)
+        const chxAddress1Before = await chxSwap.mappedAddresses(ethAddress1)
+        const chxAddress2Before = await chxSwap.mappedAddresses(ethAddress2)
 
         // ACT
         await chxSwap.mapAddress(chxAddress1, {from: ethAddress1})
         await chxSwap.mapAddress(chxAddress3, {from: ethAddress1})
 
         // ASSERT
-        const chxAddress1After = await chxSwap.getMappedAddress(ethAddress1)
-        const chxAddress2After = await chxSwap.getMappedAddress(ethAddress2)
+        const chxAddress1After = await chxSwap.mappedAddresses(ethAddress1)
+        const chxAddress2After = await chxSwap.mappedAddresses(ethAddress2)
 
         assert.notEqual(chxAddress1After, chxAddress1Before, 'Mapped address 1 expected to change')
         assert.equal(chxAddress1After, chxAddress3, 'Mapped address 1 mismatch')

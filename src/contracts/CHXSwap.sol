@@ -21,14 +21,6 @@ contract CHXSwap is Ownable {
         AddressMapped(ethAddress, _chxAddress);
     }
 
-    function getMappedAddress(address _ethAddress)
-        external
-        view
-        returns (string)
-    {
-        return mappedAddresses[_ethAddress];
-    }
-
     // Enable recovery of ether sent by mistake to this contract's address.
     function drainStrayEther(uint _amount)
         external
