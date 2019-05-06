@@ -22,7 +22,7 @@ contract('CHXSwap', accounts => {
         assert.equal(await chxSwap.owner(), admin, 'Owner address mismatch')
     })
 
-    it('changes mapped address', async () => {
+    it('sets mapped address', async () => {
         // ARRANGE
         const chxAddress1Before = await chxSwap.mappedAddresses(ethAddress1)
         const chxAddress2Before = await chxSwap.mappedAddresses(ethAddress2)
@@ -40,7 +40,7 @@ contract('CHXSwap', accounts => {
         assert.equal(chxAddress2After, chxAddress2Before, 'Mapped address 2 not expected to change')
     })
 
-    it('changes mapped address for all senders', async () => {
+    it('sets mapped address for all senders', async () => {
         // ARRANGE
         const chxAddress1Before = await chxSwap.mappedAddresses(ethAddress1)
         const chxAddress2Before = await chxSwap.mappedAddresses(ethAddress2)
