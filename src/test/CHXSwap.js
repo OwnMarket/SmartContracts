@@ -118,6 +118,22 @@ contract('CHXSwap', accounts => {
         assert.equal(chxAddress2After, chxAddress2Before, 'Mapped address 2 not expected to change')
     })
 
+    it('rejects address mapping removal if address mapping does not exist', async () => {
+        // ARRANGE
+        const chxAddress1Before = await chxSwap.mappedAddresses(ethAddress1)
+        const chxAddress2Before = await chxSwap.mappedAddresses(ethAddress2)
+
+        // ACT
+        await helpers.shouldFail(chxSwap.removeMappedAddress(ethAddress1, {from: admin}))
+
+        // ASSERT
+        const chxAddress1After = await chxSwap.mappedAddresses(ethAddress1)
+        const chxAddress2After = await chxSwap.mappedAddresses(ethAddress2)
+
+        assert.equal(chxAddress1After, chxAddress1Before, 'Mapped address 1 not expected to change')
+        assert.equal(chxAddress2After, chxAddress2Before, 'Mapped address 2 not expected to change')
+    })
+
     it('accepts repeated address mapping if previously removed by contract owner', async () => {
         // ARRANGE
         const chxAddress1Before = await chxSwap.mappedAddresses(ethAddress1)

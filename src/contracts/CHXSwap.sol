@@ -27,6 +27,7 @@ contract CHXSwap is Ownable {
         external
         onlyOwner
     {
+        require(bytes(mappedAddresses[_ethAddress]).length != 0);
         string memory chxAddress = mappedAddresses[_ethAddress];
         delete mappedAddresses[_ethAddress];
         AddressMappingRemoved(_ethAddress, chxAddress);
