@@ -5,6 +5,7 @@ import 'zeppelin-solidity/contracts/token/ERC20Basic.sol';
 
 contract CHXSwap is Ownable {
     event AddressMapped(address indexed ethAddress, string chxAddress);
+    event AddressMappingRemoved(address indexed ethAddress, string chxAddress);
 
     mapping (address => string) public mappedAddresses;
 
@@ -17,8 +18,18 @@ contract CHXSwap is Ownable {
         external
     {
         address ethAddress = msg.sender;
+        require(bytes(mappedAddresses[ethAddress]).length == 0);
         mappedAddresses[ethAddress] = _chxAddress;
         AddressMapped(ethAddress, _chxAddress);
+    }
+
+    function removeMappedAddress(address _ethAddress)
+        external
+        onlyOwner
+    {
+        string memory chxAddress = mappedAddresses[_ethAddress];
+        delete mappedAddresses[_ethAddress];
+        AddressMappingRemoved(_ethAddress, chxAddress);
     }
 
     // Enable recovery of ether sent by mistake to this contract's address.
@@ -31,7 +42,7 @@ contract CHXSwap is Ownable {
         return true;
     }
 
-    // Enable recovery of any ERC20 compatible token, sent by mistake to this contract's address.
+    // Enable recovery of any ERC20 compatible token sent by mistake to this contract's address.
     function drainStrayTokens(ERC20Basic _token, uint _amount)
         external
         onlyOwner
