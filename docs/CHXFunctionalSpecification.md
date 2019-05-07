@@ -125,3 +125,25 @@ After `CHXToken`, `CHXTokenSale` and `CHXVestingVaultFactory` contracts are inde
 - `CHXToken` contract has a property named `tokenSaleContractAddress`, which should be set by calling the function `setTokenSaleContractAddress` and passing in the address of `CHXTokenSale` contract.
 - `CHXTokenSale` contract has a property named `tokenContract`, which should be set by calling the function `setTokenContract` and passing in the address of `CHXToken` contract.
 - `CHXVestingVaultFactory` contract has a property named `tokenContract`, which should be set by calling the function `setTokenContract` and passing in the address of `CHXToken` contract.
+
+
+## CHXSwap Contract
+
+The purpose of the `CHXSwap` contract is to map Ethereum addresses to native CHX addresses on Own blockchain. This will enable holders of CHX ERC20 token to register an address on Own blockchain, to which the balance of CHX will be allocated. The swap process is explained in the [announcement article](https://medium.com/ownmarket/own-native-blockchain-token-swap-explained-faq-f725a5e0f4e9).
+
+
+### Address Submission/Mapping
+
+`CHXSwap` contract has `mapAddress` function, which enables submission of a native CHX address (generated using [Own blockchain wallet](https://wallet.weown.com/wallet)), to be assigned to the sender's Ethereum address.
+
+
+### Handling Mistakes
+
+Submission of a native CHX address can be done only once, from one Ethereum address. If a mistake has been made, in order to repeat the submission, Ethereum address owner will have to contact Own to reset his mapping. Own staff will remove the mapped address using `removeMappedAddress` function, which can be executed only by contract owner.
+
+To avoid abuse, address owner will have to prove the ownership of the Ethereum address by sending a small amount of ETH (just to cover reset TX fee) to Own's contract admin address.
+
+
+### Draining Stray Ether and Other ERC20 Tokens
+
+`CHXSwap` contract is not supposed to ever receive any Ether or other ERC20 tokens. To prevent mistakenly sent Ether or ERC20 tokens from being locked in `CHXSwap` forever, two functions are provided to enable token contract owner to drain Ether or other ERC20 compatible tokens from `CHXSwap` address.
