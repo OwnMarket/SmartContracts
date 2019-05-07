@@ -129,17 +129,17 @@ After `CHXToken`, `CHXTokenSale` and `CHXVestingVaultFactory` contracts are inde
 
 ## CHXSwap Contract
 
-The purpose of the `CHXSwap` contract is to map Ethereum addresses to native CHX addresses on Own blockchain. This will enable holders of CHX ERC20 token to register an address on Own blockchain, to which the balance of CHX will be allocated. The swap process is explained in the [announcement article](https://medium.com/ownmarket/own-native-blockchain-token-swap-explained-faq-f725a5e0f4e9).
+The purpose of the `CHXSwap` contract is to map Ethereum addresses to native CHX addresses on Own blockchain. This will enable holders of ERC20 CHX tokens to register an address on Own blockchain, to which the balance of CHX will be allocated. The swap process is explained in the [announcement article](https://medium.com/ownmarket/own-native-blockchain-token-swap-explained-faq-f725a5e0f4e9).
 
 
 ### Address Submission/Mapping
 
-`CHXSwap` contract has `mapAddress` function, which enables submission of a native CHX address (generated using [Own blockchain wallet](https://wallet.weown.com/wallet)), to be assigned to the sender's Ethereum address.
+`CHXSwap` contract exposes `mapAddress` function, which enables submission of a native CHX address (generated using [Own blockchain wallet](https://wallet.weown.com/wallet)), to be assigned to the sender's Ethereum address.
 
 
 ### Handling Mistakes
 
-Submission of a native CHX address can be done only once, from one Ethereum address. If a mistake has been made, in order to repeat the submission, Ethereum address owner will have to contact Own to reset his mapping. Own staff will remove the mapped address using `removeMappedAddress` function, which can be executed only by contract owner.
+One Ethereum address can submit a corresponding native CHX address only once. If a mistake has been made, in order to repeat the submission, Ethereum address owner will have to contact Own to remove the mapped address. Unless native CHX tokens are already allocated to the mapped address on Own blockchain, Own staff will remove the mapped address using `removeMappedAddress` function, which can be executed only by contract owner.
 
 To avoid abuse, address owner will have to prove the ownership of the Ethereum address by sending a small amount of ETH (just to cover reset TX fee) to Own's contract admin address.
 
