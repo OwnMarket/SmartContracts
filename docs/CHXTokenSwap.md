@@ -22,8 +22,8 @@ To create a native CHX address, follow these steps:
 
 - Go to [Own wallet](https://wallet.weown.com).
 - Click on "Create wallet" menu item (on the left side).
-- Store your mnemonic (list of words) safely - **without mnemonic words you will not be able to restore your wallet** if you ever need to.
-- Enter password to encrypt your keystore file.
+- Write down / store your recovery phrase (list of words) in a safe location. **Without recovery phrase you will not be able to restore your wallet** if you ever need to.
+- Enter password to encrypt your keystore file. You can use this file as an alternative mechanism to restore the wallet in daily operations without exposing your recovery phrase. (Recovery phrase is still most important and primary way to restore the wallet, so make sure you have it.)
 - Click on the "Create wallet" button.
 - Save your keystore file in safe location.
 - Copy (or make a note of) the wallet address shown on the left side, because you will need it in the next step.
