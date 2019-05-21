@@ -16,13 +16,13 @@ Steps are explained in details below.
 
 ## Create Native CHX Address
 
-**NOTE: These instructions correspond to the version of the wallet which will be deployed in last week of May 2019. Current version of the wallet doesn't support this workflow.**
+**NOTE: These instructions correspond to the version of the wallet which will be deployed in last week of May 2019. Current version of the wallet doesn't support this workflow. Please do not start the swap process until new version of the Own wallet is available.**
 
 To create a native CHX address, follow these steps:
 
 - Go to [Own wallet](https://wallet.weown.com).
 - Click on "Create wallet" menu item (on the left side).
-- Store your mnemonic safely.
+- Store your mnemonic (list of words) safely - **without mnemonic words you will not be able to restore your wallet** if you ever need to.
 - Enter password to encrypt your keystore file.
 - Click on the "Create wallet" button.
 - Save your keystore file in safe location.
