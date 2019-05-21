@@ -218,7 +218,7 @@ To create a native CHX address, follow these steps:
         ]
         ```
     - Click "Continue" button.
-- Click "Select and item" drop down button (to select the action from the contract) and choose `mapAddress` from the list.
+- Click "Select an item" drop down button (to select the action from the contract) and choose `mapAddress` from the list.
 - Enter your native CHX Address into `_chxAddress` field.
 - Click "Write" button.
 - Click "Confirm and Send" button in the confirmation dialog.
