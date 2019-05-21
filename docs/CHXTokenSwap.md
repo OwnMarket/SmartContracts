@@ -229,7 +229,7 @@ Once the transaction is processed and gets the status `Success`, your part of th
 **IMPORTANT:**
 
 - Swap process will not require you to reveal you private key to anyone. You will only be required to sign a transaction for submitting your CHX address into the smart contract.
-- Swap process does not involve sending CHX ERC20 tokens or ETH to any address. You will just spend small amount of ETH for the transaction fee (gas).
+- Swap process does not involve sending ERC20 CHX tokens or ETH to any address. You will just spend small amount of ETH for the transaction fee (gas).
 
 
 ### How to check if your address is correctly mapped
@@ -247,7 +247,7 @@ If you made a mistake and mapped wrong CHX address, you will have to contact us 
 Allocation of native CHX tokens on Own blockchain will be performed by Own staff once a week.
 
 Tokens will be allocated to individual CHX addresses on Own public blockchain from genesis address `CHXGEzcvxLFDTnS4L5pETLXxLsp3heH6KK1`.
-Balance on genesis address represents unallocated tokens for which swap process is not yet finished, or it wasn't even initiated by the token holders.
+Balance on genesis address represents unallocated tokens for which swap process is not yet finished, or it wasn't even initiated by the ERC20 CHX token holders.
 
 You can check the balance of your native CHX address by entering it in the [Address info page in Own wallet](https://wallet.weown.com) and clicking the "Get address info" button.
 
