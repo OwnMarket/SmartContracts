@@ -228,7 +228,7 @@ Once the transaction is processed and gets the status `Success`, your part of th
 
 **IMPORTANT:**
 
-- Swap process will not require you to reveal you private key to anyone. You will only be required to sign a transaction for submitting your CHX address into the smart contract.
+- Swap process will not require you to reveal you private key to anyone. You will only be required to sign a transaction for submitting your native CHX address into the smart contract.
 - Swap process does not involve sending ERC20 CHX tokens or ETH to any address. You will just spend small amount of ETH for the transaction fee (gas).
 
 
