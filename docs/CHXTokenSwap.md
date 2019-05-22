@@ -23,10 +23,10 @@ To create a native CHX address, follow these steps:
 - Go to [Own wallet](https://wallet.weown.com).
 - Click on "Create wallet" menu item (on the left side).
 - Write down and store safely your recovery phrase (list of 24 words). **Without recovery phrase you will not be able to restore your wallet** if you ever need to.
-- Enter password to encrypt your keystore file. You can use this file as an alternative mechanism to restore the wallet in daily operations without exposing your recovery phrase. (Recovery phrase is still most important and primary way to restore the wallet, so make sure you have it.)
+- Enter password to encrypt your keystore file. You can use this file and password as an alternative mechanism to restore the wallet in daily operations without exposing your recovery phrase. (Recovery phrase is still most important and primary way to restore the wallet, so make sure you don't lose it.)
 - Click on the "Create wallet" button.
 - Save your keystore file in safe location.
-- Copy (or make a note of) the wallet address shown on the left side, because you will need it in the next step.
+- Make a note of the wallet address shown in the upper left corner, because you will need it in the next step.
 
 
 ## Submit Native CHX Address Into Token Swap Smart Contract
@@ -219,7 +219,7 @@ To create a native CHX address, follow these steps:
         ```
     - Click "Continue" button.
 - Click "Select an item" drop down button (to select the action from the contract) and choose `mapAddress` from the list.
-- Enter your native CHX Address into `_chxAddress` field.
+- Enter your native CHX address into `_chxAddress` field.
 - Click "Write" button.
 - Click "Confirm and Send" button in the confirmation dialog.
 - Click "Check Status on etherscan.io" button, to follow the execution of the transaction.
