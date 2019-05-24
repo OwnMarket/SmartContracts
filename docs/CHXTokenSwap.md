@@ -249,6 +249,6 @@ Allocation of native CHX tokens on Own blockchain will be performed by Own staff
 Tokens will be allocated to individual CHX addresses on Own public blockchain from genesis address `CHXGEzcvxLFDTnS4L5pETLXxLsp3heH6KK1`.
 Balance on genesis address represents unallocated tokens for which swap process is not yet finished, or it wasn't even initiated by the ERC20 CHX token holders.
 
-You can check the balance of your native CHX address by entering it in the [Address info page in Own wallet](https://wallet.weown.com) and clicking the "Get address info" button.
+You can check the balance of your native CHX address by entering it in the [Address info page in Own wallet](https://wallet.weown.com) and clicking the "Get address" button.
 
 If your tokens are not allocated on Own blockchain in 7 days, after you have submitted your address mapping in swap smart contract, please contact Own at support@weown.com.
