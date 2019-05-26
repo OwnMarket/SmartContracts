@@ -32,7 +32,7 @@ To create a native CHX address, follow these simple steps:
 ## Submit the native CHX Address into the Ethereum Token Swap Smart Contract
 
 1. Go to ["Interact with Contract" section on MyEtherWallet](https://www.myetherwallet.com/interface/interact-with-contract).
-2. Access your Ethereum wallet, which holds the ERC20 CHX tokens, using one of the methods MyEtherWallet offers.
+2. Access your Ethereum wallet, which holds the ERC-20 CHX tokens, using one of the methods MyEtherWallet offers.
 3. Enter the following value in "Contract Address" field:
     ```
     0x59a8D0bdF9e024f060B230F8F54f291F4D03e2D5
@@ -228,7 +228,7 @@ Once the transaction is processed and you see the status `Success`, your part of
 ### A few important notes:
 
 - The swap process will not require you to ever reveal your private key to anyone. You will only be required to sign a transaction for submitting your native CHX address into the smart contract. This is done via the above steps and your MyEtherWallet transaction. **We will never ask you for your private key – do not share or reveal this to anyone.**
-- The swap process does not involve you sending ERC20 CHX tokens or ETH to any address. **We will never ask you to send any of your tokens to an ETH address.**
+- The swap process does not involve you sending ERC-20 CHX tokens or ETH to any address. **We will never ask you to send any of your tokens to an ETH address.**
 - The above process requires just a small amount of ETH for the transaction fee (gas), so make sure your MyEtherWallet has enough ETH in balance.
 - Do not change or modify the above ABI/JSON Interface text.
 
