@@ -1,4 +1,4 @@
-# CHX Token Swap (DRAFT)
+# CHX Token Swap
 
 Contributors in Own will know that we launched our native blockchain earlier this year. As of today, CHX tokens exist on the Ethereum blockchain. As part of this development, we are swapping the CHX ERC-20 tokens we were previously using to a CHX mainnet token on our Own blockchain. This document explains the process of swapping the CHX token.
 
@@ -247,9 +247,9 @@ If you made a mistake and mapped the wrong native CHX address, you will have to 
 
 The allocation of the native CHX tokens on the Own blockchain will be performed by Own staff during the first week of June, and then periodically once every week.
 
-The tokens will be allocated to individual CHX addresses on the Own public blockchain from our genesis address `CHXGEzcvxLFDTnS4L5pETLXxLsp3heH6KK1`.
+The tokens will be allocated to individual CHX addresses on the Own public blockchain from our genesis address [`CHXGEzcvxLFDTnS4L5pETLXxLsp3heH6KK1`](https://wallet.weown.com/address/CHXGEzcvxLFDTnS4L5pETLXxLsp3heH6KK1).
 The balance on the genesis address represents all unallocated tokens, which are not yet swapped.
 
-You can always check the balance of your native CHX address by entering it in the "Address info" page in [Own wallet](https://wallet.weown.com) and clicking the "Get address" button.
+You can always check the balance of your native CHX address by entering it in the ["Address info" page in Own wallet](https://wallet.weown.com/address) and clicking the "Get address" button.
 
 If your tokens are not allocated on the Own blockchain after 7 days, please contact our support team at support@weown.com.
