@@ -16,8 +16,6 @@ These steps are explained in more detail below. If, at any point you are unsure 
 
 ## Create the native CHX Address on the Own blockchain network
 
-**NOTE: These instructions correspond to the version of the wallet which will be deployed in the last week of May 2019. The current version of the wallet doesn't support this workflow. Please do not start the swap process until the new version of the Own wallet is available. We will communicate when this is available.**
-
 To create a native CHX address, follow these simple steps:
 
 1. Go to the [Own wallet](https://wallet.weown.com), which uses the Own blockchain network.
