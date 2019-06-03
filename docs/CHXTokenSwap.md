@@ -13,6 +13,8 @@ The CHX token swap process consists of three simple steps:
 
 These steps are explained in more detail below. If, at any point you are unsure what to do, please get in touch via our support email: support@weown.com.
 
+The entire process can be seen in the [video](https://www.youtube.com/watch?v=odV1KpsR-Vw) as well.
+
 
 ## Create the native CHX Address on the Own blockchain network
 
