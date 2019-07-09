@@ -218,7 +218,7 @@ To create a native CHX address, follow these simple steps:
     ```
 5. Click the "Continue" button.
 6. Click the "Select an item" drop down button (to select the action from the contract) and choose `mapAddress` from the list.
-7. Enter your native CHX address into the `_chxAddress` field.
+7. Enter your native CHX address into the `_chxAddress` field. (No need to enter "Value in ETH")
 8. Click the "Write" button.
 9. Click the "Confirm and Send" button in the confirmation dialog.
 10. Click the "Check Status on etherscan.io" button, to follow the status of the transaction.
