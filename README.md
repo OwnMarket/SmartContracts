@@ -1,4 +1,4 @@
-# Chainium Smart Contracts
+# Own Smart Contracts
 
 This repository contains smart contract code for [Own](https://www.weown.com) Token (CHX).
 
