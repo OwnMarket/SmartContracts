@@ -1,6 +1,6 @@
 # Chainium Smart Contracts
 
-This repository contains smart contract code for [Chainium](https://www.chainium.io) Token (CHX).
+This repository contains smart contract code for [Own](https://www.weown.com) Token (CHX).
 
 [Functional Specification](docs/CHXFunctionalSpecification.md) document contains more details about smart contract functionality.
 
@@ -16,7 +16,7 @@ $ sudo npm install -g truffle
 Repository:
 
 ```
-$ git clone https://github.com/Chainium/SmartContracts.git SmartContracts
+$ git clone https://github.com/OwnMarket/SmartContracts.git SmartContracts
 $ cd ./SmartContracts/src
 $ npm install
 ```
