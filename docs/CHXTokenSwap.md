@@ -252,4 +252,4 @@ The balance on the genesis address represents all unallocated tokens, which are 
 
 You can always check the balance of your native CHX address by entering it in the ["Address info" page in Own wallet](https://wallet.weown.com/address) and clicking the "Get address" button.
 
-If your tokens are not allocated on the Own blockchain after 7 days, please contact our support team at support@weown.com.
+If your tokens are not allocated on the Own blockchain after one month, please contact our support team at support@weown.com.
