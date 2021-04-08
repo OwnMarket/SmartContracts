@@ -245,7 +245,7 @@ If you made a mistake and mapped the wrong native CHX address, you will have to 
 
 ## Allocation of native CHX
 
-The allocation of the native CHX tokens on the Own blockchain will be performed by Own staff during the first week of June, and then periodically once every week.
+The allocation of the native CHX tokens on the Own blockchain will be performed by Own staff during the first week of June, and then periodically once every month. Please note that the token swap will be discontinued on 30/6/2021.
 
 The tokens will be allocated to individual CHX addresses on the Own public blockchain from our genesis address [`CHXGEzcvxLFDTnS4L5pETLXxLsp3heH6KK1`](https://wallet.weown.com/address/CHXGEzcvxLFDTnS4L5pETLXxLsp3heH6KK1).
 The balance on the genesis address represents all unallocated tokens, which are not yet swapped.
